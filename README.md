@@ -58,3 +58,30 @@ Ensure the script is executable:
 chmod +x projector.sh
 ```
 
+## add_user
+
+**`adduser.sh`** is a script to create a new user on a Unix system, optionally taking a username as an argument, prompting for a password, and adding the user to the sudo group.
+
+### Features:
+- **Create a new user**: Takes a username as an argument or prompts for one if not provided.
+- **Set user password**: Prompts for a password and confirms it.
+- **Add user to sudo group**: Grants the new user sudo privileges.
+- **Switch to new user**: Switches to the newly created user's account.
+
+### Usage:
+
+1. **Create a new user with specified username:**
+   ```bash
+   ./adduser.sh username
+   ```
+
+2. **Create a new user without specifying a username (script will prompt for it):**
+   ```bash
+   ./adduser.sh
+   ```
+
+Ensure the script is executable:
+```bash
+chmod +x adduser.sh
+```
+
