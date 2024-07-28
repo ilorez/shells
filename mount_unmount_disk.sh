@@ -84,6 +84,7 @@ case $choice in
   list_disks
   read -p "Enter the number of the disk you want to mount: " disk_number
   disk_name=$(list_disks | sed -n "${disk_number}p" | awk '{print $3}')
+  echo "mounting $disk_name"
   mount_disk "$disk_name"
   ;;
 2)
@@ -91,6 +92,7 @@ case $choice in
   list_disks
   read -p "Enter the number of the disk you want to unmount: " disk_number
   disk_name=$(list_disks | sed -n "${disk_number}p" | awk '{print $3}')
+  echo "unmounting $disk_name"
   unmount_disk "$disk_name"
   ;;
 *)
