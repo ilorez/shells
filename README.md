@@ -1,6 +1,13 @@
 # shells
 Hello there! This is my shells that contains some useful shell scripts.
 
+
+## Table of Content
+- [projector](#projector) 
+- [add_user](#add_user) 
+- [remove_user](#remove_user) 
+- [mount_unmount_disk](#mount_unmount_disk) 
+ 
 ## projector
 
 **`projector.sh`** is a versatile script for managing your projector display settings via HDMI on a Linux system.
