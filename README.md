@@ -109,3 +109,32 @@ Ensure the script is executable:
 chmod +x remove_user.sh
 ```
 
+## mount_unmount_disk
+**`mount_unmount_disk.sh`** is a script to mount or unmount disks on a Unix system, providing options to select the desired disk and operation.
+
+### Features:
+- **List available disks**: Shows a list of available disks with their sizes and mount points.
+- **Mount disks**: Mounts selected disk to `/mnt/<disk_name>`.
+- **Unmount disks**: Safely unmounts selected disk.
+- **NTFS support**: Can mount NTFS filesystems if `ntfs-3g` is installed.
+- **Automatic directory change**: Changes to home directory if current directory was on an unmounted disk.
+
+### Usage:
+1. **Run the script:**
+   ```bash
+   ./mount_unmount_disk.sh
+   ```
+2. **Choose an option:**
+   - `1` for mounting a disk
+   - `2` for unmounting a disk
+3. **Select a disk** from the displayed list by entering its number.
+
+### Requirements:
+- `sudo` privileges
+- `ntfs-3g` (optional, for NTFS filesystem support)
+
+Ensure the script is executable:
+```bash
+chmod +x mount_unmount_disk.sh
+```
+
