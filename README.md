@@ -144,4 +144,9 @@ Ensure the script is executable:
 ```bash
 chmod +x mount_unmount_disk.sh
 ```
+Notes: 
+- The script uses `lsblk` and `udisksctl` commands to list disks and mount/unmount them, respectively.
+- The script will create a directory `/mnt/<disk_name>` to mount the selected disk.
+- The script will change the directory to the home directory if the current directory is on an unmounted disk.
+- The script will prompt for `sudo` password when mounting or unmounting a disk.
 
