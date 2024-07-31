@@ -26,6 +26,8 @@ get_password() {
   done
 }
 
+echo "This script will add a new user to the system with sudo privileges."
+
 # Main script execution
 get_username $1
 get_password
