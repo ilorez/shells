@@ -1,6 +1,8 @@
 #!/bin/bash
 
-name="ilorez"
+echo "This script will display your name in different fonts"
+
+read -p "Enter your name: " name
 
 echo "standard"
 echo "======================"
