@@ -7,6 +7,8 @@ Hello there! This is my shells that contains some useful shell scripts.
 - [add_user](#add_user) 
 - [remove_user](#remove_user) 
 - [mount_unmount_disk](#mount_unmount_disk) 
+- [download_figlet_fonts](#download_figlet_fonts) 
+- [write_my_name](#write_my_name) 
  
 ## projector
 
