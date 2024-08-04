@@ -4,23 +4,80 @@
 check_figlet() {
   if ! command -v figlet &>/dev/null; then
     echo "figlet could not be found, installing..."
-    sudo pacman -S figlet
+    if ! sudo pacman -S figlet; then
+      echo "Failed to install figlet. Please install it manually."
+      exit 1
+    fi
   fi
+}
+
+# Function to check if required tools are installed
+check_dependencies() {
+  local deps=("wget" "pv")
+  for dep in "${deps[@]}"; do
+    if ! command -v "$dep" &>/dev/null; then
+      echo "$dep is required but not installed. Installing..."
+      if ! sudo pacman -S "$dep"; then
+        echo "Failed to install $dep. Please install it manually."
+        exit 1
+      fi
+    fi
+  done
+}
+
+# Function to get the figlet fonts directory
+get_fonts_dir() {
+  figlet -I2
+}
+
+# Function to get list of installed fonts
+get_installed_fonts() {
+  local fonts_dir
+  fonts_dir=$(get_fonts_dir)
+  find "$fonts_dir" -type f -name "*.flf" -exec basename {} .flf \;
 }
 
 # Function to download a single font
 download_font() {
-  font=$1
-  wget -q http://www.figlet.org/fonts/$font.flf -O /tmp/$font.flf
-  if [ -f /tmp/$font.flf ]; then
-    sudo mv /tmp/$font.flf /usr/share/figlet/
-    echo "$font font installed."
-  else
+  local font=$1
+  local font_dir=$2
+  wget -q "http://www.figlet.org/fonts/${font}.flf" -O "${font_dir}/${font}.flf" || {
     echo "Failed to download $font font."
+    return 1
+  }
+  echo "$font font installed."
+}
+
+# Function to download fonts in parallel
+download_fonts_parallel() {
+  local font_dir=$1
+  shift
+  local fonts=("$@")
+  local total=${#fonts[@]}
+  local downloaded=0
+
+  (
+    for font in "${fonts[@]}"; do
+      ((i = i % 10))
+      ((i++ == 0)) && wait
+      download_font "$font" "$font_dir" &
+      echo "$font"
+    done
+    wait
+  ) | pv -l -s "$total" >/dev/null
+}
+
+# Function to check if a font is actually usable
+is_font_usable() {
+  local font=$1
+  if figlet -f "$font" "test" &>/dev/null; then
+    return 0 # Font is usable
+  else
+    return 1 # Font is not usable
   fi
 }
 
-# List of all fonts to be downloaded if no arguments are provided
+# List of all fonts to be downloaded
 all_fonts=(
   "3-d" "3x5" "5lineoblique" "acrobatic" "alligator" "alligator2" "alphabet"
   "avatar" "banner" "banner3-D" "banner3" "banner4" "barbwire" "basic" "bell"
@@ -44,16 +101,86 @@ all_fonts=(
   "twopoint" "univers" "usaflag" "weird"
 )
 
-# Check if figlet is installed
-check_figlet
+# Main script
+main() {
+  check_figlet
+  check_dependencies
 
-# Download specified fonts or all fonts if no arguments are given
-if [ "$#" -eq 0 ]; then
+  local font_dir
+  font_dir=$(get_fonts_dir)
+  local custom_dir=false
+
+  # Parse command line arguments
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+    -d | --directory)
+      font_dir="$2"
+      custom_dir=true
+      shift 2
+      ;;
+    *)
+      break
+      ;;
+    esac
+  done
+
+  # Create font directory if it doesn't exist
+  if [[ $custom_dir == true ]]; then
+    mkdir -p "$font_dir"
+  elif [[ ! -w "$font_dir" ]]; then
+    echo "Error: No write permission for $font_dir. Please run with sudo or use --directory option."
+    exit 1
+  fi
+
+  # Get list of installed fonts
+  local installed_fonts=($(get_installed_fonts))
+  echo "Fonts reported by figlist: ${#installed_fonts[@]}"
+
+  # Determine which fonts to download
+  local fonts_to_download=()
+
+  # Add fonts from all_fonts array that are not installed or not usable
   for font in "${all_fonts[@]}"; do
-    download_font "$font"
+    if [[ ! " ${installed_fonts[@]} " =~ " ${font} " ]] || ! is_font_usable "$font"; then
+      fonts_to_download+=("$font")
+    fi
   done
-else
-  for font in "$@"; do
-    download_font "$font"
+
+  # Add fonts from figlist that are not in all_fonts and not usable
+  for font in "${installed_fonts[@]}"; do
+    if [[ ! " ${all_fonts[@]} " =~ " ${font} " ]] && ! is_font_usable "$font"; then
+      fonts_to_download+=("$font")
+    fi
   done
-fi
+
+  # Remove duplicates from fonts_to_download
+  fonts_to_download=($(echo "${fonts_to_download[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
+
+  # Download fonts
+  if [ ${#fonts_to_download[@]} -eq 0 ]; then
+    echo "No new fonts to download."
+  else
+    echo "Downloading ${#fonts_to_download[@]} fonts..."
+    download_fonts_parallel "$font_dir" "${fonts_to_download[@]}"
+  fi
+
+  echo "Font installation complete."
+
+  # Check for any remaining unusable fonts
+  local unusable_fonts=()
+  for font in "${installed_fonts[@]}"; do
+    if ! is_font_usable "$font"; then
+      unusable_fonts+=("$font")
+    fi
+  done
+
+  if [ ${#unusable_fonts[@]} -gt 0 ]; then
+    echo "The following fonts are still not usable after download attempt:"
+    for font in "${unusable_fonts[@]}"; do
+      echo "  - $font"
+    done
+    echo "These may be control files, special encodings, or might require additional configuration."
+  fi
+}
+
+main "$@"
