@@ -150,3 +150,72 @@ Notes:
 - The script will change the directory to the home directory if the current directory is on an unmounted disk.
 - The script will prompt for `sudo` password when mounting or unmounting a disk.
 
+
+## download_figlet_fonts
+
+**`download_figlet_fonts.sh`** is a script to ensure that figlet is installed, check and install required dependencies, and download figlet fonts in parallel if not already installed.
+
+### Features:
+- **Check and install figlet**: Ensures figlet is installed on the system.
+- **Install required dependencies**: Installs `wget` and `pv` if they are not already installed.
+- **Download figlet fonts**: Downloads a predefined list of figlet fonts in parallel to the specified directory.
+
+### Usage:
+
+1. **Run the script:**
+   ```bash
+   ./download_figlet_fonts.sh
+   ```
+
+2. **Specify a custom directory for fonts (optional):**
+   ```bash
+   ./download_figlet_fonts.sh -d /path/to/fonts
+   ```
+
+Ensure the script is executable:
+```bash
+chmod +x download_figlet_fonts.sh
+```
+
+## write_my_name
+
+**`write_my_name.sh`** is a script to display a given name using figlet in a specified font or in all available fonts.
+
+### Features:
+- **Display name in a specified font**: Uses figlet to display the name in the chosen font.
+- **Display name in all available fonts**: Loops through all installed figlet fonts and displays the name.
+
+### Usage:
+
+1. **Display name in a specified font:**
+   ```bash
+   ./write_my_name.sh -n "Your Name" -f "font_name"
+   ```
+
+2. **Display name in all available fonts:**
+   ```bash
+   ./write_my_name.sh -n "Your Name" --all
+   ```
+
+Ensure the script is executable:
+```bash
+chmod +x write_my_name.sh
+```
+
+### Examples:
+
+- **Display name in the "big" font:**
+  ```bash
+  ./write_my_name.sh -n "Ilorez" -f "big"
+  ```
+
+- **Display name in all available fonts:**
+  ```bash
+  ./write_my_name.sh -n "Ilorez" --all
+  ```
+
+Make sure both scripts have execute permissions:
+```bash
+chmod +x download_figlet_fonts.sh
+chmod +x write_my_name.sh
+```
