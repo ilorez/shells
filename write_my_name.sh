@@ -8,6 +8,18 @@ check_figlet() {
   fi
 }
 
+# Function to get the directory of figlet fonts
+get_fonts_dir() {
+  figlet -I2
+}
+
+# Function to get the list of available fonts
+get_available_fonts() {
+  local fonts_dir
+  fonts_dir=$(get_fonts_dir)
+  find "$fonts_dir" -type f -name "*.flf" -exec basename {} .flf \;
+}
+
 # Function to display name in a specific font
 display_in_font() {
   local name=$1
@@ -21,7 +33,9 @@ display_in_font() {
 # Function to display name in all available fonts
 display_in_all_fonts() {
   local name=$1
-  for font in $(figlist | grep -v "Figlet fonts in"); do
+  local fonts
+  fonts=$(get_available_fonts)
+  for font in $fonts; do
     display_in_font "$name" "$font"
   done
 }
