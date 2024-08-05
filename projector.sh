@@ -37,7 +37,7 @@ if [[ $action == "off" ]]; then
   xrandr --output HDMI-1 --off --output LVDS-1 --auto
 elif [[ $action == "on" ]]; then
   echo "Turning the projector on"
-  echo "position: $position"
-  echo "resolution $resolution"
+  echo "- position: $position"
+  echo "- resolution: $resolution"
   xrandr --output HDMI-1 $position LVDS-1 $resolution
 fi
