@@ -224,3 +224,4 @@ chmod +x write_my_name.sh
 Notes:
 - The script uses `figlet` to display the name in the specified font.
 - The script will display the name in all available figlet fonts if the `--all` flag is provided.
+- The script will prompt to install `figlet` if it is not already installed.
