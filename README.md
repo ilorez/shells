@@ -1,5 +1,5 @@
 # shells
-Hello there! This is my shells that contains some useful shell scripts.
+Hello there! This is my shells repo that contains some useful shell scripts.
 
 
 ## Table of Content
@@ -117,6 +117,10 @@ Ensure the script is executable:
 ```bash
 chmod +x remove_user.sh
 ```
+Notes:
+  - The script will prompt for confirmation before removing the user.
+  - The script will prompt for `sudo` password when removing the user.
+
 
 ## mount_unmount_disk
 **`mount_unmount_disk.sh`** is a script to mount or unmount disks on a Unix system, providing options to select the desired disk and operation.
@@ -225,3 +229,4 @@ Notes:
 - The script uses `figlet` to display the name in the specified font.
 - The script will display the name in all available figlet fonts if the `--all` flag is provided.
 - The script will prompt to install `figlet` if it is not already installed.
+
