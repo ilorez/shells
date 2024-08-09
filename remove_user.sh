@@ -8,12 +8,14 @@ get_username() {
     username=$1
   fi
 }
+# clear console
+clear
 
 # test if write_my_name.sh is found and executable
 #  if not found, exit with nothing
 #  if found run command
 if [ -x ./write_my_name.sh ]; then
-  ./write_my_name.sh -n "RUser" -f larry3d -nfn
+  ./write_my_name.sh -n "remove user" -f standard -nfn -c red
 fi
 
 # Main script execution
