@@ -205,10 +205,8 @@ chmod +x download_figlet_fonts.sh
 3. **For not display the name of the font:**
    ```bash
    ./write_my_name.sh -n "Your Name" --no-font-name
-   ```
-  or 
-   ```bash
-    ./write_my_name.sh -n "Your Name" -nfn
+   # or
+   ./write_my_name.sh -n "Your Name" -nfn
    ```
 
 Ensure the script is executable:
