@@ -9,7 +9,13 @@ get_username() {
   fi
 }
 
-./write_my_name.sh -n "Rmove User" -f larry3d
+# test if write_my_name.sh is found and executable
+#  if not found, exit with nothing
+#  if found run command
+if [ -x ./write_my_name.sh ]; then
+  ./write_my_name.sh -n "RUser" -f larry3d
+fi
+
 # Main script execution
 get_username $1
 
