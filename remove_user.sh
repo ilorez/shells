@@ -13,7 +13,7 @@ get_username() {
 #  if not found, exit with nothing
 #  if found run command
 if [ -x ./write_my_name.sh ]; then
-  ./write_my_name.sh -n "RUser" -f larry3d
+  ./write_my_name.sh -n "RUser" -f larry3d -nfn
 fi
 
 # Main script execution

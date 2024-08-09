@@ -20,29 +20,50 @@ get_available_fonts() {
   find "$fonts_dir" -type f -name "*.flf" -exec basename {} .flf \;
 }
 
-# Function to display name in a specific font
+# Function to display name in a specific font with color
 display_in_font() {
   local name=$1
   local font=$2
   local no_font_name=$3
+  local color=$4
+
   if [[ "$no_font_name" == false ]]; then
-    echo "Font: $font"
+    echo -e "${color}Font: $font"
     echo "======================"
   fi
-  figlet -f "$font" "$name" || echo "Font '$font' not found."
+
+  figlet -f "$font" "$name" | while IFS= read -r line; do echo -e "${color}${line}"; done || echo "Font '$font' not found."
+
   if [[ "$no_font_name" == false ]]; then
     echo "======================"
   fi
 }
 
-# Function to display name in all available fonts
+# Function to display name in all available fonts with color
 display_in_all_fonts() {
   local name=$1
+  local color=$2
   local fonts
   fonts=$(get_available_fonts)
   for font in $fonts; do
-    display_in_font "$name" "$font"
+    display_in_font "$name" "$font" false "$color"
   done
+}
+
+# Function to map color names to ANSI escape codes
+get_color_code() {
+  local color=$1
+  case $color in
+  black) echo "\033[0;30m" ;;
+  red) echo "\033[0;31m" ;;
+  green) echo "\033[0;32m" ;;
+  yellow) echo "\033[0;33m" ;;
+  blue) echo "\033[0;34m" ;;
+  purple) echo "\033[0;35m" ;;
+  cyan) echo "\033[0;36m" ;;
+  white) echo "\033[0;37m" ;;
+  *) echo "\033[0m" ;; # Default to no color
+  esac
 }
 
 # Main script
@@ -53,6 +74,7 @@ main() {
   local font=""
   local all_fonts=false
   local no_font_name=false
+  local color="\033[0m" # Default to no color
 
   # Parse command line arguments
   while [[ $# -gt 0 ]]; do
@@ -72,6 +94,10 @@ main() {
     --all)
       all_fonts=true
       shift
+      ;;
+    -c | --color)
+      color=$(get_color_code "$2")
+      shift 2
       ;;
     *)
       echo "Unknown option: $1"
@@ -93,15 +119,18 @@ main() {
     fi
   fi
 
-  # Display name in specified font(s)
+  # Display name in specified font(s) with color
   if [[ "$all_fonts" == true ]]; then
-    display_in_all_fonts "$name"
+    display_in_all_fonts "$name" "$color"
   elif [[ -n "$font" ]]; then
-    display_in_font "$name" "$font" "$no_font_name"
+    display_in_font "$name" "$font" "$no_font_name" "$color"
   else
-    echo "No font specified. Using default font."
-    display_in_font "$name" "standard" "$no_font_name"
+    echo -e "No font specified. Using default font."
+    display_in_font "$name" "standard" "$no_font_name" "$color"
   fi
+
+  # Reset color at the end
+  echo -e "\033[0m"
 }
 
 main "$@"
