@@ -9,6 +9,7 @@ get_username() {
   fi
 }
 
+./write_my_name.sh -n "Rmove User" -f larry3d
 # Main script execution
 get_username $1
 
