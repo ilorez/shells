@@ -202,6 +202,14 @@ chmod +x download_figlet_fonts.sh
    ```bash
    ./write_my_name.sh -n "Your Name" --all
    ```
+3. **For not display the name of the font:**
+   ```bash
+   ./write_my_name.sh -n "Your Name" --no-font-name
+   ```
+  or 
+   ```bash
+    ./write_my_name.sh -n "Your Name" -nfn
+   ```
 
 Ensure the script is executable:
 ```bash
@@ -212,7 +220,7 @@ chmod +x write_my_name.sh
 
 - **Display name in the "big" font:**
   ```bash
-  ./write_my_name.sh -n "Ilorez" -f "big"
+  ./write_my_name.sh -n "Ilorez" -f "big" -nfn
   ```
 
 - **Display name in all available fonts:**
