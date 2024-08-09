@@ -185,24 +185,26 @@ chmod +x download_figlet_fonts.sh
 
 ## write_my_name
 
-**`write_my_name.sh`** is a script to display a given name using figlet in a specified font or in all available fonts.
+**`write_my_name.sh`** is a script to display a given name using figlet in a specified font or in all available fonts, with an optional color.
 
 ### Features:
 - **Display name in a specified font**: Uses figlet to display the name in the chosen font.
 - **Display name in all available fonts**: Loops through all installed figlet fonts and displays the name.
+- **Optional color output**: Allows you to display the name in a specified color.
 
 ### Usage:
 
-1. **Display name in a specified font:**
+1. **Display name in a specified font and color:**
    ```bash
-   ./write_my_name.sh -n "Your Name" -f "font_name"
+   ./write_my_name.sh -n "Your Name" -f "font_name" -c "color"
    ```
 
 2. **Display name in all available fonts:**
    ```bash
    ./write_my_name.sh -n "Your Name" --all
    ```
-3. **For not display the name of the font:**
+
+3. **For not displaying the name of the font:**
    ```bash
    ./write_my_name.sh -n "Your Name" --no-font-name
    # or
@@ -216,23 +218,21 @@ chmod +x write_my_name.sh
 
 ### Examples:
 
-- **Display name in the "big" font:**
+- **Display name in the "big" font with red color:**
   ```bash
-  ./write_my_name.sh -n "Ilorez" -f "big" -nfn
+  ./write_my_name.sh -n "Ilorez" -f "big" -c "red" -nfn
   ```
 
-- **Display name in all available fonts:**
+- **Display name in all available fonts with blue color:**
   ```bash
-  ./write_my_name.sh -n "Ilorez" --all
+  ./write_my_name.sh -n "Ilorez" --all -c "blue"
   ```
 
-Make sure both scripts have execute permissions:
-```bash
-chmod +x download_figlet_fonts.sh
-chmod +x write_my_name.sh
-```
-Notes:
+### Notes:
+- Supported colors include `black`, `red`, `green`, `yellow`, `blue`, `purple`, `cyan`, and `white`.
 - The script uses `figlet` to display the name in the specified font.
 - The script will display the name in all available figlet fonts if the `--all` flag is provided.
 - The script will prompt to install `figlet` if it is not already installed.
+
+
 
