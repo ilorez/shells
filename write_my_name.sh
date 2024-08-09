@@ -24,10 +24,15 @@ get_available_fonts() {
 display_in_font() {
   local name=$1
   local font=$2
-  echo "Font: $font"
-  echo "======================"
+  local no_font_name=$3
+  if [[ "$no_font_name" == false ]]; then
+    echo "Font: $font"
+    echo "======================"
+  fi
   figlet -f "$font" "$name" || echo "Font '$font' not found."
-  echo "======================"
+  if [[ "$no_font_name" == false ]]; then
+    echo "======================"
+  fi
 }
 
 # Function to display name in all available fonts
@@ -47,6 +52,7 @@ main() {
   local name=""
   local font=""
   local all_fonts=false
+  local no_font_name=false
 
   # Parse command line arguments
   while [[ $# -gt 0 ]]; do
@@ -58,6 +64,10 @@ main() {
     -f | --font)
       font="$2"
       shift 2
+      ;;
+    -nfn | --no-font-name)
+      no_font_name=true
+      shift
       ;;
     --all)
       all_fonts=true
@@ -87,10 +97,10 @@ main() {
   if [[ "$all_fonts" == true ]]; then
     display_in_all_fonts "$name"
   elif [[ -n "$font" ]]; then
-    display_in_font "$name" "$font"
+    display_in_font "$name" "$font" "$no_font_name"
   else
     echo "No font specified. Using default font."
-    display_in_font "$name" "standard"
+    display_in_font "$name" "standard" "$no_font_name"
   fi
 }
 
