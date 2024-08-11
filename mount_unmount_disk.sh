@@ -72,6 +72,16 @@ print_final_instructions() {
   echo "You may need to run this command manually as the script cannot change your current shell's directory."
 }
 
+# clear console
+clear
+
+# test if write_my_name.sh is found and executable
+#  if not found, exit with nothing
+#  if found run command
+if [ -x ./write_my_name.sh ]; then
+  ./write_my_name.sh -n "Disk" -f standard -nfn -c cyan
+fi
+
 # Main script
 echo "Choose an option:"
 echo "1 - Mount"
