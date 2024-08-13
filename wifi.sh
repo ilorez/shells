@@ -32,7 +32,7 @@ fi
 selected_network="${network_array[$((network_number - 1))]}"
 
 # Prompt the user for the WiFi password
-read -sp "Enter the password for '$selected_network': " wifi_password
+read -p "Enter the password for '$selected_network': " wifi_password
 echo
 
 # Connect to the selected WiFi network
