@@ -1,4 +1,13 @@
 #!/bin/bash
+# clear console
+clear
+
+# test if write_my_name.sh is found and executable
+#  if not found, exit with nothing
+#  if found run command
+if [ -x ./write_my_name.sh ]; then
+  ./write_my_name.sh -n "Download Figlet Fonts" -f standard -nfn -c cyan
+fi
 
 # Function to check if figlet is installed
 check_figlet() {
