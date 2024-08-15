@@ -1,4 +1,13 @@
 #!/bin/bash
+# clear console
+clear
+
+# test if write_my_name.sh is found and executable
+#  if not found, exit with nothing
+#  if found run command
+if [ -x ./write_my_name.sh ]; then
+  ./write_my_name.sh -n "Static" -f larry3d -nfn -c cyan
+fi
 
 echo "This script will display your name in different fonts"
 

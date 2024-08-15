@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Function to check if figlet is installed
 check_figlet() {
   if ! command -v figlet &>/dev/null; then
