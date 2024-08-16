@@ -6,7 +6,7 @@ clear
 #  if not found, exit with nothing
 #  if found run command
 if [ -x ./write_my_name.sh ]; then
-  ./write_my_name.sh -n "Projector" -f standard -nfn -c cyan
+  ./write_my_name.sh -n "Display" -f standard -nfn -c cyan
 fi
 
 # Default action for turning the projector on
