@@ -120,6 +120,7 @@ chmod +x remove_user.sh
 Notes:
   - The script will prompt for confirmation before removing the user.
   - The script will prompt for `sudo` password when removing the user.
+  - The script will remove the user's home directory and all its contents.
 
 
 ## mount_unmount_disk
