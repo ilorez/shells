@@ -76,6 +76,7 @@ chmod +x projector.sh
 - **Set user password**: Prompts for a password and confirms it.
 - **Add user to sudo group**: Grants the new user sudo privileges.
 - **Switch to new user**: Switches to the newly created user's account.
+- **Check user creation**: Verifies the user was created successfully.
 
 ### Usage:
 
