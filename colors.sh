@@ -13,7 +13,7 @@ printf "\e[0;37mWhite \e[1;37mbold White \e[0;97mhigh intensity White\n"
 # background colors
 printf "\e[0;40mBlack \e[1;40mbold Black \e[0;100mhigh intensity Black\n"
 printf "\e[0;41mRed \e[1;41mbold Red \e[0;101mhigh intensity Red\n"
-printf "\e[0;42mGreen \e[1;42mbold Green \e[0;102mhigh intensity Green\n"
+printf "\e[0;42mGreen \e[1;42mbold Green \e[0;102mh\e[0;30igh intensity Green\n"
 printf "\e[0;43mYellow \e[1;43mbold Yellow \e[0;103mhigh intensity Yellow\n"
 
 # text attributes
