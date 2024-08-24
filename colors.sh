@@ -26,7 +26,15 @@ printf "\e[0;23mNot italic \e[3mItalic \e[23mNot italic\n"
 printf "\e[0;39mDefault \e[1;39mBold Default\n"
 
 # cursor movement
+printf "\e[1A" # move cursor up one line
+printf "\e[1B" # move cursor down one line
+printf "\e[1C" # move cursor right one column
+printf "\e[1D" # move cursor left one column
 #printf "\e[2J" # clear screen
+
+# cursor position
+printf "\e[1;1H" # move cursor to row 1 column 1
+printf "\e[1;2f" # move cursor to row 1 column 2
 
 # reset
 printf "\e[0m"
