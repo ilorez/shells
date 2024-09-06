@@ -79,6 +79,7 @@ chmod +x projector.sh
 - **Check user creation**: Verifies the user was created successfully.
 - **Prompt for confirmation**: Asks for confirmation before creating the user.
 - **Prompt for sudo password**: Prompts for `sudo` password when adding the user to the sudo group.
+- **Check for existing user**: Ensures the username does not already exist.
 
 ### Usage:
 
