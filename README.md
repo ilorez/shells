@@ -122,6 +122,7 @@ Notes:
   - The script will prompt for `sudo` password when removing the user.
   - The script will remove the user's home directory and all its contents.
   - The script will not remove the user's home directory if the user is currently logged in.
+  - The script will not remove the user's home directory if the user is the only user on the system.
 
 
 ## mount_unmount_disk
