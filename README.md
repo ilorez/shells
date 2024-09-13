@@ -159,6 +159,7 @@ Notes:
 - The script will change the directory to the home directory if the current directory is on an unmounted disk.
 - The script will prompt for `sudo` password when mounting or unmounting a disk.
 - The script will not unmount the disk if it is currently in use.
+- The script will not unmount the root (`/`) or home (`/home`) partitions.
 
 
 ## download_figlet_fonts
