@@ -160,6 +160,7 @@ Notes:
 - The script will prompt for `sudo` password when mounting or unmounting a disk.
 - The script will not unmount the disk if it is currently in use.
 - The script will not unmount the root (`/`) or home (`/home`) partitions.
+- The script will not unmount the disk if the current directory is on the disk.
 
 
 ## download_figlet_fonts
