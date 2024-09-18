@@ -158,6 +158,7 @@ Notes:
 - The script will create a directory `/mnt/<disk_name>` to mount the selected disk.
 - The script will change the directory to the home directory if the current directory is on an unmounted disk.
 - The script will not mount the disk if it is already mounted.
+- The script will not unmount the disk if it is not mounted.
 
 
 ## download_figlet_fonts
