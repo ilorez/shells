@@ -239,6 +239,6 @@ chmod +x write_my_name.sh
 - The script will prompt to install `figlet` if it is not already installed.
 - The script will prompt to install `lolcat` if it is not already installed for color output.
 - The script will display the name in the default font if the specified font is not found.
-- The script will display the name in the default color if the specified color is not found.
 - The script will display the name in the default font color if `lolcat` is not installed.
+- The script will display the name in the default font color if the specified color is not found.
 
