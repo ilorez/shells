@@ -301,5 +301,6 @@ chmod +x bluetooth.sh
 - For audio switching, the script uses `pactl` (PulseAudio) or `wpctl` (PipeWire) depending on your system's audio setup.
 - You may need to run the script with `sudo` for some operations, depending on your system's Bluetooth permissions.
 - The script assumes your Bluetooth adapter is already enabled. If not, use `bluetoothctl power on` before running the script.
--  The script will prompt for the `sudo` password when switching audio output.
+- The script will prompt for the `sudo` password when switching audio output.
+- The script will not switch audio output if the specified device is not connected.
 
