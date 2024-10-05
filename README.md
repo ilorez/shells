@@ -303,4 +303,5 @@ chmod +x bluetooth.sh
 - The script assumes your Bluetooth adapter is already enabled. If not, use `bluetoothctl power on` before running the script.
 - The script will prompt for the `sudo` password when switching audio output.
 - The script will not switch audio output if the specified device is not connected.
+- The script will not connect to a device if it is already connected.
 
