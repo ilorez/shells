@@ -1,5 +1,21 @@
 #!/bin/bash
 
+# Function to display script usage
+usage() {
+  echo "Usage: $0 [OPTION]"
+  echo "Options:"
+  echo "  --help: Display this help message"
+  echo "  --disconnect: Disconnect from the currently paired device"
+  echo "  -s: Scan for Bluetooth devices"
+  echo "  -c device_name: Connect to a specific Bluetooth device"
+  echo "  -d device_name: Disconnect from a specific Bluetooth device"
+  echo "  -l: List connected Bluetooth devices"
+  echo "  -a device_name: Switch audio output to a connected Bluetooth device"
+  echo
+  echo "If no options are provided, the script will scan for devices and prompt to connect."
+  exit 1
+}
+
 # Clear console
 clear
 
@@ -14,49 +30,133 @@ if ! command -v bluetoothctl &>/dev/null; then
   exit 1
 fi
 
-# Turn on Bluetooth if it's not already on
-bluetoothctl power on
+# Function to scan for Bluetooth devices
+scan_devices() {
+  echo "Scanning for Bluetooth devices..."
+  bluetoothctl power on
+  bluetoothctl scan on &
+  sleep 10
+  bluetoothctl scan off
+  echo "Scan complete."
+}
 
-# Scan for available Bluetooth devices
-echo "Scanning for Bluetooth devices..."
-bluetoothctl scan on &
-sleep 5
-bluetoothctl scan off
+# Function to connect to a Bluetooth device
+connect_device() {
+  local device_name="$1"
+  echo "Attempting to connect to device: $device_name"
+  if bluetoothctl connect "$device_name"; then
+    echo "Connected to Bluetooth device successfully."
+    bluetoothctl trust "$device_name"
+  else
+    echo "Failed to connect to the Bluetooth device."
+    echo "You may need to pair the device first. Use 'bluetoothctl pair $device_name' to pair."
+  fi
+}
 
-# Get list of available Bluetooth devices
-devices=$(bluetoothctl devices | cut -f2- -d' ')
+# Function to disconnect from a Bluetooth device
+disconnect_device() {
+  local device_name="$1"
+  echo "Disconnecting from device: $device_name"
+  if bluetoothctl disconnect "$device_name"; then
+    echo "Disconnected successfully."
+  else
+    echo "Failed to disconnect. The device may not be connected."
+  fi
+}
 
-# Display available devices with numbers
-echo "Available Bluetooth devices:"
-IFS=$'\n' read -r -d '' -a device_array <<<"$devices"
-for i in "${!device_array[@]}"; do
-  echo "$((i + 1)). ${device_array[$i]}"
-done
+# Function to disconnect from the currently paired device
+disconnect_current() {
+  local connected_device=$(bluetoothctl info | grep "Device" | cut -d " " -f 2)
+  if [ -n "$connected_device" ]; then
+    echo "Disconnecting from current device: $connected_device"
+    disconnect_device "$connected_device"
+  else
+    echo "No device currently connected."
+  fi
+}
 
-# Prompt the user to select a device
-read -p "Enter the number of the Bluetooth device you want to connect to: " device_number
+# Function to list connected devices
+list_devices() {
+  echo "Connected Bluetooth devices:"
+  bluetoothctl devices Connected
+}
 
-# Check if the input is a valid number
-if ! [[ "$device_number" =~ ^[0-9]+$ ]] || [ "$device_number" -lt 1 ] || [ "$device_number" -gt "${#device_array[@]}" ]; then
-  echo "Invalid number. Exiting."
-  exit 1
-fi
+# Function to switch audio output
+switch_audio() {
+  local device_name="$1"
+  if command -v pactl &>/dev/null; then
+    # Using PulseAudio
+    sink=$(pactl list short sinks | grep "$device_name" | cut -f1)
+    if [ -n "$sink" ]; then
+      pactl set-default-sink "$sink"
+      echo "Audio output switched to $device_name"
+    else
+      echo "Device $device_name not found or not an audio sink"
+    fi
+  elif command -v wpctl &>/dev/null; then
+    # Using PipeWire
+    sink=$(wpctl status | grep "$device_name" | awk '{print $2}')
+    if [ -n "$sink" ]; then
+      wpctl set-default "$sink"
+      echo "Audio output switched to $device_name"
+    else
+      echo "Device $device_name not found or not an audio sink"
+    fi
+  else
+    echo "Neither PulseAudio nor PipeWire found. Unable to switch audio output."
+  fi
+}
 
-# Get the selected device's MAC address
-selected_device=$(echo "${device_array[$((device_number - 1))]}" | cut -d' ' -f1)
+# Function to scan and prompt for connection
+scan_and_connect() {
+  scan_devices
+  echo "Available devices:"
+  readarray -t devices < <(bluetoothctl devices | sort)
+  for i in "${!devices[@]}"; do
+    echo "$((i + 1)). ${devices[$i]}"
+  done
+  echo
+  read -p "Enter the number of the device you want to connect to: " device_number
+  if [[ "$device_number" =~ ^[0-9]+$ ]] && [ "$device_number" -ge 1 ] && [ "$device_number" -le "${#devices[@]}" ]; then
+    selected_device="${devices[$((device_number - 1))]}"
+    device_mac=$(echo "$selected_device" | awk '{print $2}')
+    connect_device "$device_mac"
+  else
+    echo "Invalid selection. Please run the script again and enter a valid number."
+  fi
+}
 
-# Connect to the selected Bluetooth device
-echo "Attempting to connect to the selected device..."
-if bluetoothctl connect "$selected_device"; then
-  echo "Connected to Bluetooth device successfully."
+# Main script execution
+if [ "$1" = "--help" ]; then
+  usage
+elif [ "$1" = "--disconnect" ]; then
+  disconnect_current
+elif [ $# -eq 0 ]; then
+  scan_and_connect
 else
-  echo "Failed to connect to the Bluetooth device."
-  echo "You may need to pair the device first. Use 'bluetoothctl pair $selected_device' to pair."
+  while getopts "sc:d:la:" opt; do
+    case ${opt} in
+    s)
+      scan_devices
+      ;;
+    c)
+      connect_device "$OPTARG"
+      ;;
+    d)
+      disconnect_device "$OPTARG"
+      ;;
+    l)
+      list_devices
+      ;;
+    a)
+      switch_audio "$OPTARG"
+      ;;
+    \?)
+      usage
+      ;;
+    esac
+  done
 fi
-
-# Trust the device for future connections
-echo "Trusting the device for future connections..."
-bluetoothctl trust "$selected_device"
 
 echo "Script completed."
-echo "use pauvecontrol for"
+echo "For detailed audio control, you can use 'pavucontrol' (for PulseAudio) or 'wpctl' (for PipeWire)."
