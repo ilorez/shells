@@ -243,65 +243,20 @@ chmod +x write_my_name.sh
 ### Features:
 - **Scan for Bluetooth devices**: Discovers nearby Bluetooth devices.
 - **Connect to a Bluetooth device**: Establishes a connection with a specified Bluetooth device.
-- **Disconnect from a Bluetooth device**: Terminates the connection with a specified Bluetooth device.
-- **List connected devices**: Shows all currently connected Bluetooth devices.
-- **Switch audio output**: Changes the system's audio output to a connected Bluetooth device.
 
 ### Usage:
 
-1. **Scan for Bluetooth devices:**
+1. **Scan for Bluetooth devices and take your choice:**
    ```bash
-   ./bluetooth.sh -s
+   ./bluetooth.sh
    ```
-
-2. **Connect to a Bluetooth device:**
-   ```bash
-   ./bluetooth.sh -c "device_name" 
-   ```
-
-3. **Disconnect from a Bluetooth device:**
-   ```bash
-   ./bluetooth.sh -d "device_name"
-   ```
-
-4. **List connected devices:**
-   ```bash
-   ./bluetooth.sh -l
-   ```
-
-5. **Switch audio output to a Bluetooth device:**
-   ```bash
-   ./bluetooth.sh -a "device_name"
-   ```
-
 Ensure the script is executable:
 ```bash
 chmod +x bluetooth.sh
 ```
 
-### Examples:
-
-- **Scan for available Bluetooth devices:**
-  ```bash
-  ./bluetooth.sh -s
-  ```
-
-- **Connect to a Bluetooth headset named "MyHeadset":**
-  ```bash
-  ./bluetooth.sh -c "MyHeadset"
-  ```
-
-- **Switch audio output to the connected "MyHeadset":**
-  ```bash
-  ./bluetooth.sh -a "MyHeadset"
-  ```
-
 ### Notes:
 - The script requires `bluetoothctl` for managing Bluetooth connections.
 - For audio switching, the script uses `pactl` (PulseAudio) or `wpctl` (PipeWire) depending on your system's audio setup.
 - You may need to run the script with `sudo` for some operations, depending on your system's Bluetooth permissions.
-- The script assumes your Bluetooth adapter is already enabled. If not, use `bluetoothctl power on` before running the script.
-- The script will prompt for the `sudo` password when switching audio output.
-- The script will not switch audio output if the specified device is not connected.
-- The script will not connect to a device if it is already connected.
 
