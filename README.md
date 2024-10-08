@@ -259,4 +259,5 @@ chmod +x bluetooth.sh
 - The script requires `bluetoothctl` for managing Bluetooth connections.
 - For audio switching, the script uses `pactl` (PulseAudio) or `wpctl` (PipeWire) depending on your system's audio setup.
 - You may need to run the script with `sudo` for some operations, depending on your system's Bluetooth permissions.
+- The script will prompt for `sudo` password when needed.
 
