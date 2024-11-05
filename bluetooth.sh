@@ -35,7 +35,7 @@ scan_devices() {
   echo "Scanning for Bluetooth devices..."
   bluetoothctl power on
   bluetoothctl scan on &
-  sleep 10
+  sleep 5
   bluetoothctl scan off
   echo "Scan complete."
 }
@@ -44,6 +44,11 @@ scan_devices() {
 connect_device() {
   local device_name="$1"
   echo "Attempting to connect to device: $device_name"
+  scan on
+  remove $device_name
+  trust $device_name
+  pair $device_name
+
   if bluetoothctl connect "$device_name"; then
     echo "Connected to Bluetooth device successfully."
     bluetoothctl trust "$device_name"
