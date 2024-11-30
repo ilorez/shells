@@ -1,0 +1,3 @@
+connect to wifi (ask for passwod if it changed && show psw): nmcli d wifi connect <ssid> --ask --show-secrets
+rescan: nmcli d wifi rescan
+show psw: nmcli d wifi show-password ifname wlan0
