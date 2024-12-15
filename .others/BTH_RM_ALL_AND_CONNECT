@@ -1,0 +1,14 @@
+#!/bin/bash
+
+bluetoothctl power on
+sleep 2
+timeout 5 bluetoothctl scan on
+sleep 5
+bluetoothctl paired-devices | awk '{print $2}' | while read -r mac_address
+do
+    echo "Removing device with MAC address: $mac_address"
+    bluetoothctl remove $mac_address
+done
+bluetoothctl connect A1:A2:A3:A4:A5:A6
+
+echo "The Bluetooth device has been connected successfully"
